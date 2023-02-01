@@ -1,5 +1,6 @@
 package com.blogPessoal.app.model;
 
+import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 import jakarta.persistence.*;
 import jakarta.validation.constraints.NotBlank;
 import jakarta.validation.constraints.Size;
@@ -22,6 +23,11 @@ public class Postagem {
     private String texto;
     @UpdateTimestamp
     private LocalDateTime data;
+
+    @ManyToOne
+    @JsonIgnoreProperties("postagem")
+    @JoinColumn(name = "id")
+    private Tema tema;
 
     public Long getId() {
         return id;
