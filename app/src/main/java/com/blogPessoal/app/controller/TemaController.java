@@ -1,6 +1,5 @@
 package com.blogPessoal.app.controller;
 
-import com.blogPessoal.app.model.Postagem;
 import com.blogPessoal.app.model.Tema;
 import com.blogPessoal.app.repository.TemaRepository;
 import jakarta.validation.Valid;
@@ -14,7 +13,7 @@ import java.util.List;
 import java.util.Optional;
 
 @RestController
-@RequestMapping("/postagens")
+@RequestMapping("/temas")
 @CrossOrigin(origins = "*", allowedHeaders = "*")
 public class TemaController {
     @Autowired
@@ -41,13 +40,14 @@ public class TemaController {
                 .body(temaRepository.save(tema));
 
     }
-    @PutMapping("/id")
+    @PutMapping("/{id}")
     public ResponseEntity<Tema> put(@Valid @RequestBody Tema tema) {
         return temaRepository.findById(tema.getId())
                 .map(resposta -> ResponseEntity.status(HttpStatus.OK)
                         .body(temaRepository.save(tema)))
                 .orElse(ResponseEntity.status(HttpStatus.NOT_FOUND).build());
     }
+
     @ResponseStatus(HttpStatus.NO_CONTENT)
     @DeleteMapping("/{id}")
     public void delete(@RequestBody Long id) {
