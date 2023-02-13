@@ -7,6 +7,10 @@ import com.blogPessoal.app.service.UsuarioService;
 import org.junit.jupiter.api.*;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
+import org.springframework.boot.test.web.client.TestRestTemplate;
+import org.springframework.http.HttpEntity;
+import org.springframework.http.HttpMethod;
+import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 
 import java.util.List;
@@ -18,6 +22,10 @@ import static org.junit.jupiter.api.Assertions.*;
 @SpringBootTest(webEnvironment = SpringBootTest.WebEnvironment.RANDOM_PORT)
 @TestInstance(TestInstance.Lifecycle.PER_CLASS)
 class UsuarioControllerTest {
+
+    @Autowired
+    private TestRestTemplate testRestTemplate;
+
     @Autowired
     private UsuarioController controller;
 
@@ -70,25 +78,26 @@ class UsuarioControllerTest {
     @Test
     @DisplayName("Cadastra um novo usuário")
     void postUsuario() {
-       Usuario usuario =  new Usuario(5L, "Ewerton da Silva", "ewerton@email.com.br",
-               "13465278", "https://i.imgur/FETvc20.jpg");
+       HttpEntity<Usuario> requisicao = new HttpEntity<Usuario>(new Usuario(5L, "Ewerton da Silva",
+               "ewerton@email.com.br", "13465278", "https://i.imgur/FETvc20.jpg"));
 
-        ResponseEntity<Usuario> response = controller.postUsuario(usuario);
+        ResponseEntity<Usuario> resposta = testRestTemplate.exchange("/usuarios/cadastrar", HttpMethod.POST, requisicao, Usuario.class);
 
-        assertNotNull(response.getBody());
-        assertEquals(response.getStatusCode().value(), 201);
+        assertEquals(HttpStatus.CREATED, resposta.getStatusCode());
+        assertEquals(requisicao.getBody().getNome(), resposta.getBody().getNome());
+        assertEquals(requisicao.getBody().getUsuario(), resposta.getBody().getUsuario());
 
     }
 
     @Test
     @DisplayName("Edita um usuário")
     void putUsuario() {
-        Usuario usuario =  new Usuario(1L, "João da Silva", "joao1@email.com.br", "13465278", "https://i.imgur/FETvc20.jpg");
+        HttpEntity<Usuario> requisicao = new HttpEntity<Usuario>(new Usuario(1L, "João da Silva",
+                "joao1@email.com.br", "13465278", "https://i.imgur/FETvc20.jpg"));
 
-        ResponseEntity<Usuario> response = controller.putUsuario(usuario);
+        ResponseEntity<Usuario> resposta = testRestTemplate.exchange("/usuarios/atualizar", HttpMethod.PUT, requisicao, Usuario.class);
 
-        assertNotNull(response.getBody());
-        assertEquals(response.getStatusCode().value(), 200);
+        assertEquals(HttpStatus.UNAUTHORIZED, resposta.getStatusCode());
     }
     @AfterAll
     public void end(){
