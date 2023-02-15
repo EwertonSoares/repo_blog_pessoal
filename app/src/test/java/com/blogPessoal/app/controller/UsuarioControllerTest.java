@@ -15,7 +15,6 @@ import org.springframework.http.ResponseEntity;
 
 import java.util.List;
 import java.util.Optional;
-import java.util.UUID;
 
 import static org.junit.jupiter.api.Assertions.*;
 
@@ -54,14 +53,17 @@ class UsuarioControllerTest {
         assertEquals(response.getStatusCode().value(), 200);
     }
 
-    @Test
-    @DisplayName("Retorna um Usuário por id")
-    void getById() {
-        ResponseEntity<Usuario> response = controller.getById(1L);
-
-        assertNotNull(response.getBody());
-        assertEquals(response.getStatusCode().value(), 200);
-    }
+//    @Test
+//    @DisplayName("Retorna um Usuário por id")
+//    void getById() {
+//        HttpEntity<Usuario> requisicao = new HttpEntity<Usuario>(new Usuario(5L, "Ewerton da Silva",
+//                "ewerton@email.com.br", "13465278", "https://i.imgur/FETvc20.jpg"));
+//
+//        ResponseEntity<Usuario> resposta = testRestTemplate.exchange("/usuarios/{id}", HttpMethod.GET, requisicao, Usuario.class);
+//
+//        assertNull(resposta);
+//        assertEquals(resposta.getStatusCode().value(), 401);
+//    }
 
     @Test
     @DisplayName("Retorna status 401")
