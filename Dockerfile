@@ -1,4 +1,4 @@
-FROM openjdk:17.0.1 as build
+FROM openjdk:18.0.1 as build
 
 WORKDIR /workspace/app
 
@@ -13,7 +13,7 @@ RUN ./mvnw install -DskipTests
 
 RUN mkdir -p target/dependency && (cd target/dependency; jar -xf ../*.jar)
 
-FROM openjdk:17.0.1
+FROM openjdk:18.0.1
 
 VOLUME /tmp
 
